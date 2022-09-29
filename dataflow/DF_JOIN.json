@@ -1,5 +1,5 @@
 {
-	"name": "PL_MOVE_CSV_TO_SQL_DB",
+	"name": "DF_JOIN",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
