@@ -24,6 +24,13 @@
 						"referenceName": "LS_BLOB_training566",
 						"type": "LinkedServiceReference"
 					}
+				},
+				{
+					"dataset": {
+						"referenceName": "MoviesOutput",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesCountByYear"
 				}
 			],
 			"transformations": [
@@ -31,7 +38,8 @@
 					"name": "ExtractYearTitle"
 				},
 				{
-					"name": "RatingByYear"
+					"name": "RatingByYear",
+					"description": "Add aggregate columns"
 				}
 			],
 			"scriptLines": [
@@ -52,7 +60,13 @@
 				"     partitionFileNames:['MoviesClean.csv'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> MoviesClean"
+				"     partitionBy('hash', 1)) ~> MoviesClean",
+				"RatingByYear sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['MovieCountByYear'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> MoviesCountByYear"
 			]
 		}
 	}
