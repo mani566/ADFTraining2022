@@ -21,6 +21,13 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AutoResolveIntegrationRuntime')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -48,13 +55,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/default')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
-			"apiVersion": "2018-06-01",
-			"properties": {},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LS_BLOB_training566')]",
@@ -93,6 +93,126 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesDB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_BLOB_training566",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "moviesDB.csv",
+						"container": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "movie",
+						"type": "String"
+					},
+					{
+						"name": "title",
+						"type": "String"
+					},
+					{
+						"name": "genres",
+						"type": "String"
+					},
+					{
+						"name": "year",
+						"type": "String"
+					},
+					{
+						"name": "Rating",
+						"type": "String"
+					},
+					{
+						"name": "RottenTomato",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_BLOB_training566')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesDS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_BLOB_training566",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "movies.csv",
+						"container": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "movieId",
+						"type": "String"
+					},
+					{
+						"name": "title",
+						"type": "String"
+					},
+					{
+						"name": "genres",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_BLOB_training566')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/MoviesOutput')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_BLOB_training566",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "output"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_BLOB_training566')]"
 			]
 		},
 		{
@@ -194,126 +314,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_SQL_EDW')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MoviesDS')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_BLOB_training566",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "movies.csv",
-						"container": "input"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "movieId",
-						"type": "String"
-					},
-					{
-						"name": "title",
-						"type": "String"
-					},
-					{
-						"name": "genres",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_BLOB_training566')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MoviesDB')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_BLOB_training566",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "moviesDB.csv",
-						"container": "input"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "movie",
-						"type": "String"
-					},
-					{
-						"name": "title",
-						"type": "String"
-					},
-					{
-						"name": "genres",
-						"type": "String"
-					},
-					{
-						"name": "year",
-						"type": "String"
-					},
-					{
-						"name": "Rating",
-						"type": "String"
-					},
-					{
-						"name": "RottenTomato",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_BLOB_training566')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MoviesOutput')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_BLOB_training566",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "output"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_BLOB_training566')]"
 			]
 		},
 		{
@@ -484,6 +484,87 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/df_agg_derive')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "dataflow is create to learn aggregator and derive activity",
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "MoviesDS",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesV1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "MoviesOutput",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesClean",
+							"rejectedDataLinkedService": {
+								"referenceName": "LS_BLOB_training566",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"dataset": {
+								"referenceName": "MoviesOutput",
+								"type": "DatasetReference"
+							},
+							"name": "MoviesCountByYear"
+						}
+					],
+					"transformations": [
+						{
+							"name": "ExtractYearTitle"
+						},
+						{
+							"name": "RatingByYear",
+							"description": "Aggregating data by 'Year' producing columns 'MoviesCnt'"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          movieId as string,",
+						"          title as string,",
+						"          genres as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> MoviesV1",
+						"MoviesV1 derive(year = toInteger(trim(right(title,6),'()')),",
+						"          title = toString(left(title,length(title)-6))) ~> ExtractYearTitle",
+						"ExtractYearTitle aggregate(groupBy(year),",
+						"     MoviesCnt = count(year),",
+						"     partitionBy('hash', 1)) ~> RatingByYear",
+						"ExtractYearTitle sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['MoviesClean.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> MoviesClean",
+						"RatingByYear sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['MovieCountByYear'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> MoviesCountByYear"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/MoviesDS')]",
+				"[concat(variables('factoryId'), '/datasets/MoviesOutput')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_BLOB_training566')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_JOIN')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -528,8 +609,56 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
 				"[concat(variables('factoryId'), '/dataflows/DF_JOIN')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_aggregate_derive')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "dfAggDerive",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_agg_derive",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"MoviesV1": {},
+									"MoviesClean": {},
+									"MoviesCountByYear": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 32,
+								"computeType": "MemoryOptimized"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/dataflows/df_agg_derive')]"
 			]
 		}
 	]
