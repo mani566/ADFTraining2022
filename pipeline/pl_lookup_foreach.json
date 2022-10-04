@@ -29,12 +29,6 @@
 				}
 			},
 			{
-				"name": "ForEachTableList",
-				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": []
-			},
-			{
 				"name": "ForEach1",
 				"type": "ForEach",
 				"dependsOn": [
