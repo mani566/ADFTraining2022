@@ -43,9 +43,6 @@
 				},
 				{
 					"name": "Upsert"
-				},
-				{
-					"name": "surrogateKey1"
 				}
 			],
 			"scriptLines": [
@@ -92,12 +89,9 @@
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> LookupCustomerid",
-				"surrogateKey1 derive(InsertedDate = iif(isNull(InsertedDate),currentTimestamp(), InsertedDate),",
+				"LookupCustomerid derive(InsertedDate = iif(isNull(InsertedDate),currentTimestamp(), InsertedDate),",
 				"          ModifiedDate = currentTimestamp()) ~> SetDates",
 				"SetDates alterRow(insertIf(true())) ~> Upsert",
-				"LookupCustomerid keyGenerate(output({} as long),",
-				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
 				"Upsert sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
